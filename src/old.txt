@@ -1,0 +1,32 @@
+// felter på mit spilleareal. Det er en klasse jeg vil bruge senere.
+
+public class Spilleareal1 {
+    public static void main(String[] args) {
+        char[][] spilleareal = new char[20][20]; // Jeg vælger at bruge en "tabel af en tabel" for at kunne skabe et
+        // 20x20 2D spilleareal. Den første array [20] repræsenterer mine
+        // rækker, og den anden [20] repræsenterer mine kolonner.
+
+        // Jeg vælger nu at bruge en for-løkke for at kunne gentage koden indtil vores 20x20 felter er printet.
+        // Da jeg i forvejen ved hvor mange gange min ydre løkke skal gentage sig (20x), bruger jeg denne løkke fremfor
+        // en while-løkke. Jeg bruger en indlejret løkke eftersom j (kolonne) og i (række) er afhængige af hinanden for
+        // at kunne danne 2D 20x20 spillearealet, hvor alle felterne er markeret med tegnet "-".
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++) {
+
+                spilleareal[i][j] = '-';
+            }
+        }
+
+        // Her laver jeg igen en indlejret for-løkke som sætter et mellemrum imellem hver gentagelse af elementerne i
+        // tabellen, så spillearealet ser mere overskueligt ud når det printes. Println sørger for at hver gang 1 række
+        // er printet i løkken, vil der tilføjes en ny linje. Dernæst kører den indre løkke og printer kolonnerne indtil
+        // grænsen på 20 er nået.
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++) {
+                System.out.print(spilleareal[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+    }
+}
