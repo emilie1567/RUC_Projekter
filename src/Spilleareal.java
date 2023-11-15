@@ -2,7 +2,7 @@ import java.awt.Point;
 import java.util.Random;
 
 public class Spilleareal {
-    // '-' = tom plads
+
     private char[][] spilleareal;
     private Point spillerPosition;
 
@@ -41,7 +41,7 @@ public class Spilleareal {
 
         // fjern gamle position og sætter spiller.
         spilleareal[spillerPosition.x][spillerPosition.y] = '-';
-        //Hvis position er gyldig, vil vi rykke spilleren n, s, e eller w og.
+        //Hvis position er gyldig, vil vi rykke spilleren w, a, s eller d.
         spilleareal[nyPosition.x][nyPosition.y] = 'X';
 
 
@@ -65,8 +65,6 @@ public class Spilleareal {
         //"udregn" hvor mange pits der skal placeres
         int antalPits = random.nextInt(5) + 1;
 
-        //print antalPits
-        System.out.printf("antalPits = %d \n", antalPits);
 
         //Placer pits i en løkke (og husk at tjekke om de kan placeres der)
         for (int i = 0; i < antalPits; i++) {
@@ -75,7 +73,7 @@ public class Spilleareal {
             int pitY = 0;
 
             while (uGyldigtIndex == true) {
-                //"udregn" tilfældige indekser (for x og y)
+                //"udregn" tilfældige indekser (for x og y). Genererer tilfældigt tal mellem 0-19
                 pitX = random.nextInt(20);
                 pitY = random.nextInt(20);
                 //tjek om indeks er gyldigt
@@ -89,11 +87,47 @@ public class Spilleareal {
             //placer en pit på de nye koordinater
             spilleareal[pitX][pitY] = 'o';
         }
+
     }
 
-// restriktioner = må ikke ramme pit, mål eller spiller.
+    public boolean erMåletMuligt() {
+        //lav 20x20 array som fortæller om du har været på et index før
+        boolean[][] besøgt = new boolean[20][20];
+        //kald hjælpefunktion der udfører rekursion
+        return hjaelpeFunktion(spillerPosition.x, spillerPosition.y, besøgt);
+    }
 
+    private boolean hjaelpeFunktion(int x, int y, boolean[][] besøgt) {
+        //basecase (målet er nået)
+        if (x == 19 && y == 19) {
+            return true;
+        }
 
+        //basecase (ude af brættet)
+        if (x > 19 || x < 0 || y > 19 || y < 0) {
+            return false;
+        }
 
+        //basecase (pit)
+        if (spilleareal[x][y] == 'o' || besøgt[x][y]) {
+            return false;
+        }
 
+        //sætter om feltet allerede er blevet itereret.
+        besøgt[x][y] = true;
+
+        //recursive step
+        //tjek naboer:
+        boolean naboW = hjaelpeFunktion(x - 1, y, besøgt);
+        boolean naboS = hjaelpeFunktion(x + 1, y, besøgt);
+        boolean naboD = hjaelpeFunktion(x, y + 1, besøgt);
+        boolean naboA = hjaelpeFunktion(x, y - 1, besøgt);
+
+        if (naboW || naboS || naboD || naboA) {
+            //hvis en af naboerne kan komme i mål er målet muligt
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
