@@ -1,3 +1,4 @@
+//
 import java.awt.Point;
 import java.util.Random;
 
@@ -29,26 +30,35 @@ public class Spilleareal {
     }
 
     // lav en funktion der tager et "index" og sætter spilleren der
-    public boolean placerSpiller(int x, int y) {
+    public int placerSpiller(int x, int y) {
         // Den nye position
         Point nyPosition = new Point(spillerPosition.x + x, spillerPosition.y + y);
-        // tjek om den nye position er en gyldig position
-        // x < 0 -> ugyldig. x >= 20
+        // Tjekker om den nye position er en gyldig position ved brug af if statement.
+        // x < 0 -> ugyldig. x >= 20. Hvis det er gyldigt, returner 0.
         if (nyPosition.x < 0 || nyPosition.x >= 20
                 || nyPosition.y < 0 || nyPosition.y >= 20) {
-            return false;
+            return 0;
+        }
+
+        // hvis spilleren træder i et pit returneres 2.
+        if (spilleareal[nyPosition.x][nyPosition.y] == 'o') {
+            spilleareal[spillerPosition.x][spillerPosition.y] = '-';
+            spilleareal[nyPosition.x][nyPosition.y] = 'Y';
+
+            return 2;
         }
 
         // fjern gamle position og sætter spiller.
         spilleareal[spillerPosition.x][spillerPosition.y] = '-';
-        //Hvis position er gyldig, vil vi rykke spilleren w, a, s eller d.
+        //Hvis position er gyldig, vil vi rykke spilleren w, a, s eller d og returnere
+        // 1.
         spilleareal[nyPosition.x][nyPosition.y] = 'X';
 
 
         // opdater den nuværende position
         spillerPosition = nyPosition;
 
-        return true;
+        return 1;
     }
 
     public boolean harSpillerenVundet() {
@@ -78,7 +88,7 @@ public class Spilleareal {
                 pitY = random.nextInt(20);
                 //tjek om indeks er gyldigt
                 if (spilleareal[pitX][pitY] == 'o' || spilleareal[pitX][pitY] == 'X'
-                    || (pitX == 19 && pitY == 19)) {
+                        || (pitX == 19 && pitY == 19)) {
                     uGyldigtIndex = true;
                 } else {
                     uGyldigtIndex = false;
@@ -87,8 +97,9 @@ public class Spilleareal {
             //placer en pit på de nye koordinater
             spilleareal[pitX][pitY] = 'o';
         }
-
     }
+
+
 
     public boolean erMåletMuligt() {
         //lav 20x20 array som fortæller om du har været på et index før

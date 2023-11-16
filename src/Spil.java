@@ -14,9 +14,9 @@ public class Spil {
         String input;
         Scanner scan = new Scanner(System.in);
         boolean gameOver = false;
-        boolean gyldigPosition = true;
+        int gyldigPosition = 0;                                                     // har skrevet 0 her
 
-        System.out.println("Bevæg spilleren ned i 19,19 uden at træde i et pit.");
+        System.out.println("Bevæg spilleren ned i målet i det nederste højre hjørne uden at træde i et pit.");
         while (gameOver != true) {
             spilleareal.printSpilleareal();
             System.out.println("Vælg retning - w (op), a (venstre), s (ned) eller d (højre).");
@@ -49,15 +49,22 @@ public class Spil {
                 //print spillearealet
                 spilleareal.printSpilleareal();
                 //Skriv "du har vundet"
-                System.out.println("Du har vundet!");
+                System.out.println("Du vandt!");
             }
 
-            // Tjekker om spilleren bevæger sig ud fra spillearealet.
-            if (gyldigPosition == true) {
+            //0 = ude for brættet
+            //2 = træder i en pit
+            //1 = gyldig position indenfor brættet og ikke i pit
+            // Tjekker at spilleren ikke bevægede sig ud fra spillearealet.
+            if (gyldigPosition == 1) {                                       // har skrevet 1 her.
                 // placer pits
                 spilleareal.placerPits();
-            } else {
-                System.out.println("Du kan ikke gå ud over brættet");
+            } else if (gyldigPosition == 2) {
+                spilleareal.printSpilleareal();
+                gameOver = true;
+                System.out.println("Du tabte!");
+            } else { // her den lig 0
+                System.out.println("Du kan ikke gå ud over brættet.");
             }
 
             //tjek om målet er muligt, hvis ikke så sæt gameOver = true;
